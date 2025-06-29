@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "vite",
-    "build": "vite build && npx cpx ./blank_map.jpg ./dist/",
+    "build": "vite build",
     "serve": "vite preview"
   },
   "devDependencies": {
