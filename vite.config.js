@@ -1,5 +1,5 @@
 export default {
-  base: "/map/",
+  base: "/ToruMap/",
   build: {
     sourcemap: true,
   },
