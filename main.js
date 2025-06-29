@@ -3,17 +3,20 @@ import { Map, View } from "ol";
 import ImageLayer from "ol/layer/Image";
 import Static from "ol/source/ImageStatic";
 
-// Replace with your image's actual width and height in pixels
-const imageWidth = 1920;
-const imageHeight = 1080;
+const imageHeight = 1938;
+const imageWidth = 3206;
 
 const imageExtent = [0, 0, imageWidth, imageHeight];
 
-// Wait for the image to load before creating the map
 const img = new window.Image();
 img.src = "blank_map.jpg";
 
 img.onload = () => {
+  const view = new View({
+    minZoom: 1,
+    maxZoom: 8,
+    extent: imageExtent,
+  });
   const map = new Map({
     target: "map",
     layers: [
@@ -24,21 +27,18 @@ img.onload = () => {
         }),
       }),
     ],
-    view: new View({
-      center: [imageWidth / 2, imageHeight / 2],
-      zoom: 2,
-      minZoom: 2,
-      maxZoom: 8,
-      extent: imageExtent,
-    }),
+    view: view,
   });
 
-  // Only one updateSize after creation
-  setTimeout(() => {
-    map.updateSize();
-  }, 100);
+  // Fit the view to the image extent
+  view.fit(imageExtent, { size: map.getSize() });
 
-  window.addEventListener("resize", () => {
+  // Update size after image load and after window load
+  const updateMapSize = () => {
     map.updateSize();
-  });
+    view.fit(imageExtent, { size: map.getSize() });
+  };
+  setTimeout(updateMapSize, 100);
+  window.addEventListener("resize", updateMapSize);
+  window.addEventListener("load", updateMapSize);
 };
